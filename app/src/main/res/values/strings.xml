@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Champ</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_as_guardian">LOGIN AS GUARDIAN</string>
+    <string name="login_as_child">LOGIN AS CHILD</string>
+    <string name="not_yet_a_user_sign_up">Not yet a user? Sign up.</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="title_activity_guardian_home">GuardianHomeActivity</string>
+    <string name="name">Name</string>
+</resources>
