@@ -56,7 +56,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
             String username = mUsername.getText().toString();
             String password = mPassword.getText().toString();
 
-            if (username.equals("") && password.equals("")){
+            if (username.equals("") || password.equals("")){
                 DialogUtility.messageDialog("Please don't leave any empty fields.",this);
             }else {
                 Intent intent;

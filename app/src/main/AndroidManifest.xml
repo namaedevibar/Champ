@@ -20,7 +20,8 @@
         </activity>
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.LoginPageActivity" />
-        <activity android:name=".Activity.GuardianHomeActivity"></activity>
+        <activity android:name=".Activity.GuardianHomeActivity" />
+        <activity android:name=".Activity.ChildProfileActivity"></activity>
     </application>
 
 </manifest>

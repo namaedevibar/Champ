@@ -15,8 +15,7 @@
 
 
         <android.support.v7.widget.CardView
-            android:layout_margin="8dp
-"
+            android:layout_margin="8dp"
             android:background="@color/colorWhite"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
