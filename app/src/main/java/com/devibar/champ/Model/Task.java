@@ -1,18 +1,53 @@
 package com.devibar.champ.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by namai on 9/26/2017.
  */
 
-public class Task {
+public class Task implements Parcelable{
     private String taskId;
     private String taskName;
     private String taskDescription;
+    private String status;
 
-    public Task(String taskId, String taskName, String taskDescription) {
+    public Task() {
+    }
+
+    public Task(String taskId, String taskName, String taskDescription, String status) {
         this.taskId = taskId;
         this.taskName = taskName;
         this.taskDescription = taskDescription;
+        this.status = status;
+    }
+
+    protected Task(Parcel in) {
+        taskId = in.readString();
+        taskName = in.readString();
+        taskDescription = in.readString();
+        status = in.readString();
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getTaskId() {
@@ -37,5 +72,18 @@ public class Task {
 
     public void setTaskDescription(String taskDescription) {
         this.taskDescription = taskDescription;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(taskId);
+        parcel.writeString(taskName);
+        parcel.writeString(taskDescription);
+        parcel.writeString(status);
     }
 }
