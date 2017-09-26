@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.devibar.champ.Activity.ChildProfileActivity;
 import com.devibar.champ.Model.Child;
+import com.devibar.champ.Model.User;
 import com.devibar.champ.R;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ import java.util.ArrayList;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
 
-    private ArrayList<Child> children;
+    private ArrayList<User> children;
     private Context context;
     private ViewHolder holder;
 
-    public ChildAdapter(ArrayList<Child> children) {
+    public ChildAdapter(ArrayList<User> children) {
         this.children = children;
     }
 
@@ -41,7 +42,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Child item = children.get(position);
+        User item = children.get(position);
 
         if (item!=null){
             holder.tvName.setText(item.getFirstName());

@@ -1,6 +1,7 @@
 package com.devibar.champ.Controller;
 
 import com.devibar.champ.Model.Child;
+import com.devibar.champ.Model.User;
 
 import java.util.ArrayList;
 
@@ -10,15 +11,14 @@ import java.util.ArrayList;
 
 public class ChildController {
 
-    public static ArrayList<Child> getChildren() {
-        ArrayList<Child> children = new ArrayList<>();
+    public static ArrayList<User> getChildren() {
+        ArrayList<User> users = new ArrayList<>();
 
-        children.add(new Child("Anton","Wycoco"));
-        children.add(new Child("Daphny","Cabiso"));
-        children.add(new Child("Deceree","Quiamco"));
-        children.add(new Child("Kobe","Relativo"));
+        users.add(new User("","daphnycabiso","Daphny","Cabiso","123456","daphny@gmail.com"));
+        users.add(new User("","koberelativo","Kobe","Relativo","123456","kobe@gmail.com"));
+        users.add(new User("","antonwycoco","Anton","Wycoco","123456","anton@gmail.com"));
+        users.add(new User("","decereequiamco","Deceree","Quiamco","123456","deceree@gmail.com"));
 
-
-        return children;
+        return users;
     }
 }
