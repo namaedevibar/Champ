@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "879599629344",
+    "firebase_url": "https://finalsattendanceapp.firebaseio.com",
+    "project_id": "finalsattendanceapp",
+    "storage_bucket": "finalsattendanceapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:879599629344:android:0334cd923dc28883",
+        "android_client_info": {
+          "package_name": "com.devibar.champ"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "879599629344-8af0bc3se3vnutg9h3jnnsoa94qlggpo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIxzZespfDCV11vIcJxwZI_mdF-hZ20hE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

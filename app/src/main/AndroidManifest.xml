@@ -21,7 +21,8 @@
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.LoginPageActivity" />
         <activity android:name=".Activity.GuardianHomeActivity" />
-        <activity android:name=".Activity.ChildProfileActivity"></activity>
+        <activity android:name=".Activity.ChildProfileActivity" />
+        <activity android:name=".Activity.Register"></activity>
     </application>
 
 </manifest>

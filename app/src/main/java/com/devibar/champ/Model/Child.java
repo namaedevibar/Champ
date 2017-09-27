@@ -1,42 +1,74 @@
 package com.devibar.champ.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by namai on 9/24/2017.
  */
-
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Child {
 
-    private String userId;
-    private String childId;
-    private String guardianId;
+    @JsonProperty
+    private String user_id;
+    @JsonProperty
+    private String child_id;
+    @JsonProperty
+    private String guardian_id;
+    @JsonProperty
+    private String firstName;
+    @JsonProperty
+    private String lastName;
 
-    public Child(String userId, String childId, String guardianId) {
-        this.userId = userId;
-        this.childId = childId;
-        this.guardianId = guardianId;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public String getChild_id() {
+        return child_id;
     }
 
-    public String getChildId() {
-        return childId;
+    public void setChild_id(String child_id) {
+        this.child_id = child_id;
     }
 
-    public void setChildId(String childId) {
-        this.childId = childId;
+    public String getGuardian_id() {
+        return guardian_id;
     }
 
-    public String getGuardianId() {
-        return guardianId;
+    public void setGuardian_id(String guardian_id) {
+        this.guardian_id = guardian_id;
     }
 
-    public void setGuardianId(String guardianId) {
-        this.guardianId = guardianId;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Child(String user_id, String child_id, String guardian_id, String firstName, String lastName) {
+
+        this.user_id = user_id;
+        this.child_id = child_id;
+        this.guardian_id = guardian_id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public Child() {
     }
 }
