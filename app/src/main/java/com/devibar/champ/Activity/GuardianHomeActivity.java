@@ -1,6 +1,7 @@
 package com.devibar.champ.Activity;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +54,11 @@ public class GuardianHomeActivity extends AppCompatActivity {
         switch(item.getItemId()){
             case R.id.search:
                 addChild();
+                break;
+            case R.id.logout:
+                mAuth.signOut();
+                Intent intent = new Intent(GuardianHomeActivity.this,LoginActivity.class);
+                startActivity(intent);
                 break;
         }
 

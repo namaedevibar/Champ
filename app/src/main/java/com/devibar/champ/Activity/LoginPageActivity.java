@@ -149,7 +149,8 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                             });
 
                 }else {
-
+                    Intent intent = new Intent(LoginPageActivity.this,ChildHomeActivity.class);
+                    startActivity(intent);
                 }
             }
 

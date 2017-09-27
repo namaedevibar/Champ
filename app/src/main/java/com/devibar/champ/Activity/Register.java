@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,20 +36,56 @@ public class Register extends AppCompatActivity {
     EditText firstName;
     EditText lastName;
     Button register;
+    private MaterialSpinner mUserType;
+
     FirebaseAuth mAuth;
     Firebase userDB, childDB, parentDB;
 
     String type;
+    private int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        email = (EditText)findViewById(R.id.editText);
-        password = (EditText)findViewById(R.id.editText2);
-        firstName = (EditText)findViewById(R.id.editText4);
-        lastName = (EditText)findViewById(R.id.editText5);
-        register = (Button)findViewById(R.id.register);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Register");
+
+
+        email = (EditText)findViewById(R.id.etEmail);
+        password = (EditText)findViewById(R.id.etPassword);
+        firstName = (EditText)findViewById(R.id.etFirstName);
+        lastName = (EditText)findViewById(R.id.etLastName);
+        register = (Button)findViewById(R.id.btnRegister);
+        mUserType = (MaterialSpinner) findViewById(R.id.spnUserType);
+
+        final ArrayList<String> userType = new ArrayList<>();
+        userType.add("Select user type.");
+        userType.add("Guardian");
+        userType.add("Child");
+
+        mUserType.setItems(userType);
+        mUserType.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                if (flag == 0) {
+                    userType.remove(0);
+                    mUserType.setItems(userType);
+                    flag = 1;
+                    mUserType.setSelectedIndex(position - 1);
+                }
+
+                if (item.equals("Guardian")){
+                    type = "parent";
+                }else {
+                    type = "child";
+                }
+
+            }
+        });
+
+
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -95,7 +135,7 @@ public class Register extends AppCompatActivity {
 
                                         String key = childDB.push().getKey();
 
-                                        childDB.child(key).setValue(params);
+                                        parentDB.child(key).setValue(params);
 
                                         Intent intent = new Intent(Register.this,GuardianHomeActivity.class);
                                         intent.putExtra("id",key);
@@ -120,24 +160,9 @@ public class Register extends AppCompatActivity {
 
     }
 
-
-
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.radioButton:
-                if (checked)
-                    // Pirates are the best
-                type = "parent";
-                    break;
-            case R.id.radioButton2:
-                if (checked)
-                    // Ninjas rule
-                type = "child";
-                    break;
-        }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        this.onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 }

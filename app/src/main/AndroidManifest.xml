@@ -22,7 +22,10 @@
         <activity android:name=".Activity.LoginPageActivity" />
         <activity android:name=".Activity.GuardianHomeActivity" />
         <activity android:name=".Activity.ChildProfileActivity" />
-        <activity android:name=".Activity.Register"></activity>
+        <activity android:name=".Activity.ChildHomeActivity" />
+        <activity android:name=".Activity.TaskActivity" />
+        <activity android:name=".Activity.Register" />
+        <activity android:name=".Activity.ChildActivity"></activity>
     </application>
 
 </manifest>

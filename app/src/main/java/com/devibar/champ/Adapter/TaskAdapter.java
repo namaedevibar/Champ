@@ -1,6 +1,7 @@
 package com.devibar.champ.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cheekiat.indicatorsteplib.StepProgress;
+import com.devibar.champ.Activity.TaskActivity;
 import com.devibar.champ.Fragment.ManageTaskDialogFragment;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
@@ -32,6 +34,10 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     public TaskAdapter(ArrayList<Task> tasks, FragmentManager fragmentManager) {
         this.tasks = tasks;
         this.fragmentManager = fragmentManager;
+    }
+
+    public TaskAdapter(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override
@@ -66,10 +72,21 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ManageTaskDialogFragment manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task);
-                    manageTaskDialogFragment.show(fragmentManager,"");
+                    if (fragmentManager!=null){
+                        ManageTaskDialogFragment manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task);
+                        manageTaskDialogFragment.show(fragmentManager,"");
+                    }else {
+                        Intent intent = new Intent(context, TaskActivity.class);
+                        intent.putExtra("TASK",task);
+                        context.startActivity(intent);
+                    }
+
                 }
             });
+
+
+
+
 
         }
 
