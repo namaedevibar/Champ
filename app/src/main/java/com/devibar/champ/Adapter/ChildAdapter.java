@@ -26,9 +26,12 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
     private ArrayList<Child> children;
     private Context context;
     private ViewHolder holder;
+    private String parent_id;
 
-    public ChildAdapter(ArrayList<Child> children) {
+    public ChildAdapter(ArrayList<Child> children, String parent_id) {
+
         this.children = children;
+        this.parent_id =parent_id;
     }
 
     @Override
@@ -56,9 +59,13 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ChildProfileActivity.class);
+
                     intent.putExtra("first name",children.get(position).getFirstName());
                     intent.putExtra("last name",children.get(position).getLastName());
-
+                    intent.putExtra("child_id",children.get(position).getChild_id());
+                    intent.putExtra("parent_id",parent_id);
+                    intent.putExtra("user_id",children.get(position).getUser_id());
+                    intent.putExtra("status",children.get(position).getStatus());
 
                     context.startActivity(intent);
                 }

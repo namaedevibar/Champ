@@ -20,6 +20,7 @@ import com.devibar.champ.Interface.OnManageTaskListener;
 import com.devibar.champ.Model.Child;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
+import com.firebase.client.Firebase;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,10 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
     private Button mAddTask;
     ArrayList<Child> child;
     private TaskAdapter mAdapter;
+    Firebase guardianChildDB, childDB;
+    String firstName;
+    String lastName;
+    String user_id, status, child_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +52,15 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().hide();
         child = new ArrayList<>();
 
-        String firstName = getIntent().getStringExtra("first name");
-        String lastName = getIntent().getStringExtra("last name");
+        firstName = getIntent().getStringExtra("first name");
+        lastName = getIntent().getStringExtra("last name");
+        user_id = getIntent().getStringExtra("user_id");
+        status = getIntent().getStringExtra("status");
+        child_id = getIntent().getStringExtra("child_id");
 
 
+        guardianChildDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIANCHILDREN");
+        childDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD");
 
         mChildName = (TextView) findViewById(R.id.txtName);
         mBirthday = (TextView) findViewById(R.id.txtBirthday);
@@ -95,7 +105,17 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
     public void response(Boolean b) {
         if (b){
             //TODO: Add Child
-            Toast.makeText(this, "ADDED!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "ADDED!", Toast.LENGTH_SHORT).show();
+            String child_id = getIntent().getStringExtra("child_id");
+            String parent_id = getIntent().getStringExtra("parent_id");
+            childDB.child(child_id).child("info").child("guardian_id").setValue(parent_id);
+            
+            Child child = new Child(user_id,child_id,parent_id,firstName,lastName,status);
+            guardianChildDB.child(parent_id).child(child_id).setValue(child);
+
+            Toast.makeText(this, "Succesfully added "+firstName + " "+lastName, Toast.LENGTH_SHORT).show();
+
+
         }
     }
 

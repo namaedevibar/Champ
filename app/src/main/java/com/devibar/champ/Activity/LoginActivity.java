@@ -84,6 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         intent.putExtra("id",id);
                                         intent.putExtra("type","normal");
+
                                         startActivity(intent);
 
 
@@ -156,7 +157,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-      //  mAuth.signOut();
+     //   mAuth.signOut();
         mAuth.addAuthStateListener(mAuthListener);
     }
 

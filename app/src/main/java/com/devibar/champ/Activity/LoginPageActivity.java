@@ -108,6 +108,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                                                 Intent intent = new Intent(LoginPageActivity.this,GuardianHomeActivity.class);
 
                                                 intent.putExtra("id",id);
+                                                intent.putExtra("type","normal");
 
                                                 startActivity(intent);
 

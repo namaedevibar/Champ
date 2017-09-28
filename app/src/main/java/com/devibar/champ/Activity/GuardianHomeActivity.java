@@ -92,7 +92,7 @@ public class GuardianHomeActivity extends AppCompatActivity {
 
         mRvChildren.setLayoutManager(new GridLayoutManager(GuardianHomeActivity.this, 2));
 
-        mAdapter = new ChildAdapter(childlist);
+        mAdapter = new ChildAdapter(childlist,id);
 
         mRvChildren.setAdapter(mAdapter);
 
@@ -121,7 +121,7 @@ public class GuardianHomeActivity extends AppCompatActivity {
 
                     mRvChildren.setLayoutManager(new GridLayoutManager(GuardianHomeActivity.this, 2));
 
-                    mAdapter = new ChildAdapter(childlist);
+                    mAdapter = new ChildAdapter(childlist,id);
 
                     mRvChildren.setAdapter(mAdapter);
 
