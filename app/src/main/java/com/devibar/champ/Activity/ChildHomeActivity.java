@@ -30,7 +30,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
-/*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.child_menu, menu);
@@ -40,13 +40,13 @@ public class ChildHomeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if (item.getItemId() == R.id.user){
+        if (item.getItemId() == R.id.profile){
             Intent intent = new Intent(ChildHomeActivity.this,ChildActivity.class);
             startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
-    }*/
+    }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

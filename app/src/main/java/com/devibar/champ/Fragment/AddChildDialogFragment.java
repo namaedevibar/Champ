@@ -1,17 +1,17 @@
-package com.devibar.champ.Fragments;
+package com.devibar.champ.Fragment;
 
 
-import android.app.DialogFragment;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.devibar.champ.Activity.GuardianHomeActivity;
 import com.devibar.champ.Model.Child;
@@ -20,18 +20,19 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
+
 /**
 
  */
-public class AddChild extends DialogFragment {
+public class AddChildDialogFragment extends SupportBlurDialogFragment {
 
 
-    EditText id;
+    EditText name;
     Button add;
     private FirebaseAuth mAuth;
     Firebase childDB;
@@ -40,18 +41,24 @@ public class AddChild extends DialogFragment {
     Firebase guardianChild;
     int index = 0;
 
-    public AddChild() {
+    public AddChildDialogFragment() {
         // Required empty public constructor
     }
 
 
+    @NonNull
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.fragment_add_child_dlialog, null);
+        builder.setView(view);
+        final Dialog dialog = builder.create();
+
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_add_child2, container, false);
-        id = (EditText)view.findViewById(R.id.id);
-        add = (Button)view.findViewById(R.id.add);
+
+        name = view.findViewById(R.id.etSearch);
+        add = view.findViewById(R.id.btnSearchChild);
         Firebase.setAndroidContext(getActivity());
 
         passId = getArguments().getString("id");
@@ -76,7 +83,7 @@ public class AddChild extends DialogFragment {
                         Log.e("childdasd",child.getFirstName());
 
 
-                        if(id.getText().toString().equals(child.getFirstName() + " "+child.getLastName())){
+                        if(name.getText().toString().equals(child.getFirstName() + " "+child.getLastName())){
 
                             Log.e("asds",child.getFirstName());
                             children.add(child);
@@ -158,7 +165,12 @@ public class AddChild extends DialogFragment {
             }
         });
 
-        return view;
+        return dialog;
+    }
+
+    @Override
+    protected boolean isDimmingEnable() {
+        return true;
     }
 
 }
