@@ -17,8 +17,11 @@ import com.devibar.champ.Fragment.ManageTaskDialogFragment;
 import com.devibar.champ.Fragment.ConfirmDialogFragment;
 import com.devibar.champ.Interface.OnConfirmListener;
 import com.devibar.champ.Interface.OnManageTaskListener;
+import com.devibar.champ.Model.Child;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
+
+import java.util.ArrayList;
 
 public class ChildProfileActivity extends AppCompatActivity implements View.OnClickListener,
         OnConfirmListener, OnManageTaskListener {
@@ -32,7 +35,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
 
     private Button mAddChild;
     private Button mAddTask;
-
+    ArrayList<Child> child;
     private TaskAdapter mAdapter;
 
     @Override
@@ -42,11 +45,19 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_child_profile);
         getSupportActionBar().hide();
+        child = new ArrayList<>();
+
+        String firstName = getIntent().getStringExtra("first name");
+        String lastName = getIntent().getStringExtra("last name");
+
+
 
         mChildName = (TextView) findViewById(R.id.txtName);
         mBirthday = (TextView) findViewById(R.id.txtBirthday);
         mAddress = (TextView) findViewById(R.id.txtAddress);
         mGuardian = (TextView) findViewById(R.id.txtGuardian);
+
+        mChildName.setText(firstName + " "+ lastName);
 
         rvTasks = (RecyclerView) findViewById(R.id.rvTasks);
 
