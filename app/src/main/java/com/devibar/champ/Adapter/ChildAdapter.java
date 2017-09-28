@@ -46,8 +46,6 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-
-
             holder.tvName.setText(children.get(position).getFirstName() + " " + children.get(position).getLastName());
 
             holder.tvDescription.setText("No Pending Tasks.");
@@ -64,6 +62,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
                     intent.putExtra("last name",children.get(position).getLastName());
                     intent.putExtra("child_id",children.get(position).getChild_id());
                     intent.putExtra("parent_id",parent_id);
+                    intent.putExtra("guardian_id",children.get(position).getGuardian_id());
                     intent.putExtra("user_id",children.get(position).getUser_id());
                     intent.putExtra("status",children.get(position).getStatus());
 

@@ -39,9 +39,9 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
     ArrayList<Child> child;
     private TaskAdapter mAdapter;
     Firebase guardianChildDB, childDB;
-    String firstName;
+    String firstName, parent_id;
     String lastName;
-    String user_id, status, child_id;
+    String user_id, status, child_id, guardian_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,11 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         user_id = getIntent().getStringExtra("user_id");
         status = getIntent().getStringExtra("status");
         child_id = getIntent().getStringExtra("child_id");
+        guardian_id = getIntent().getStringExtra("guardian_id");
+        parent_id = getIntent().getStringExtra("parent_id");
+
+
+        //yoww himoi og if diri nga if guardian_id == parent_id kay dili nah add child ang button kundi text nah nga your child
 
 
         guardianChildDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIANCHILDREN");
