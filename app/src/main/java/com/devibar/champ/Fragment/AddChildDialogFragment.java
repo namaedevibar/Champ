@@ -51,7 +51,7 @@ public class AddChildDialogFragment extends SupportBlurDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.fragment_add_child_dlialog, null);
+        View view = inflater.inflate(R.layout.fragment_add_child_dialog, null);
         builder.setView(view);
         final Dialog dialog = builder.create();
 
