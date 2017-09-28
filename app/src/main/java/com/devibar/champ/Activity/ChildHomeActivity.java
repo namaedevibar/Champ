@@ -30,7 +30,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.child_menu, menu);
@@ -46,7 +46,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

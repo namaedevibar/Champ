@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
-import com.devibar.champ.Interface.OnEditChildListener;
+
 import com.devibar.champ.Model.Child;
 import com.devibar.champ.R;
 
@@ -21,7 +21,7 @@ import fr.tvbarthel.lib.blurdialogfragment.SupportBlurDialogFragment;
 
 public class EditChildDialogFragment extends SupportBlurDialogFragment implements View.OnClickListener {
 
-    private OnEditChildListener mEditChildListener;
+
 
     private Button mEdit;
 
@@ -35,15 +35,6 @@ public class EditChildDialogFragment extends SupportBlurDialogFragment implement
         return fragment;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try{
-            this.mEditChildListener = (OnEditChildListener) activity;
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
 
     @NonNull
     @Override

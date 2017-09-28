@@ -13,11 +13,11 @@ import com.devibar.champ.Adapter.RewardAdapter;
 import com.devibar.champ.Controller.RewardController;
 import com.devibar.champ.Fragment.AddWishDialogFragment;
 import com.devibar.champ.Fragment.EditChildDialogFragment;
-import com.devibar.champ.Interface.OnEditChildListener;
+
 import com.devibar.champ.Model.Child;
 import com.devibar.champ.R;
 
-public class ChildActivity extends AppCompatActivity implements View.OnClickListener, OnEditChildListener {
+public class ChildActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mEditProfile;
     private Button mAddWish;
@@ -67,9 +67,5 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    @Override
-    public void editChild(Child child) {
-        // TODO: Edit Child
-        Toast.makeText(this, "Edited", Toast.LENGTH_SHORT).show();
-    }
+
 }

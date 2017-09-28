@@ -119,7 +119,7 @@ public class Register extends AppCompatActivity {
 
                                         String child_id = childDB.push().getKey();
 
-                                        Child child = new Child(fbuser.getUid(),child_id,"wala pa",firstName.getText().toString(),lastName.getText().toString());
+                                        Child child = new Child(fbuser.getUid(),child_id,"wala pa",firstName.getText().toString(),lastName.getText().toString(),"false");
 
                                         childDB.child(child_id).child("info").setValue(child);
                                         Intent intent = new Intent(Register.this,ChildProfileActivity.class);

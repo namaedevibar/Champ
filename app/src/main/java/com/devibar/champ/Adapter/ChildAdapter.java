@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
 
-    private ArrayList<User> children;
+    private ArrayList<Child> children;
     private Context context;
     private ViewHolder holder;
 
-    public ChildAdapter(ArrayList<User> children) {
+    public ChildAdapter(ArrayList<Child> children) {
         this.children = children;
     }
 
@@ -41,11 +41,12 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        User item = children.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        if (item!=null){
-            holder.tvName.setText(item.getFirstName());
+
+
+            holder.tvName.setText(children.get(position).getFirstName() + " " + children.get(position).getLastName());
+
             holder.tvDescription.setText("No Pending Tasks.");
             Glide.with(context).load(R.drawable.champ_logo)
                     .into(holder.tvImage);
@@ -55,10 +56,14 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, ChildProfileActivity.class);
+                    intent.putExtra("first name",children.get(position).getFirstName());
+                    intent.putExtra("last name",children.get(position).getLastName());
+
+
                     context.startActivity(intent);
                 }
             });
-        }
+
 
     }
 

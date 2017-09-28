@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mLoginGuardian;
+    Firebase IdReference;
     private Button mLoginChild;
     Firebase childDB, userDB, parentDB;
     private TextView mSignUp;
@@ -68,13 +69,47 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Log.e("loginactivity68",usermodel.getType());
 
                             if(usermodel.getType().equals("parent")){
+                                IdReference = parentDB.child(mAuth.getCurrentUser().getUid());
+                                IdReference.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                                String id = parentDB.child(mAuth.getCurrentUser().getUid()).getKey();
-                                Log.e("loginactivity59",id);
-                                Intent intent = new Intent(LoginActivity.this,GuardianHomeActivity.class);
-                                intent.putExtra("id",id);
+                                        String id = dataSnapshot.getKey();
 
-                                startActivity(intent);
+                                        Log.e("loginactivity92",id);
+                                        Log.e("loginactivity93",mAuth.getCurrentUser().getUid());
+
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        Intent intent = new Intent(LoginActivity.this,GuardianHomeActivity.class);
+
+                                        intent.putExtra("id",id);
+                                        intent.putExtra("type","normal");
+                                        startActivity(intent);
+
+
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(FirebaseError firebaseError) {
+
+                                    }
+                                });
+
                             }else{
                                 Intent intent = new Intent(LoginActivity.this,ChildProfileActivity.class);
 
@@ -121,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-       // mAuth.signOut();
+      //  mAuth.signOut();
         mAuth.addAuthStateListener(mAuthListener);
     }
 
