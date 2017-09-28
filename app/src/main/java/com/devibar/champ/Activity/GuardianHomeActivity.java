@@ -1,8 +1,6 @@
 package com.devibar.champ.Activity;
 
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,8 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.devibar.champ.Adapter.ChildAdapter;
-import com.devibar.champ.Controller.ChildController;
-import com.devibar.champ.Fragments.AddChild;
+import com.devibar.champ.Fragment.AddChildDialogFragment;
 import com.devibar.champ.Model.Child;
 import com.devibar.champ.R;
 import com.firebase.client.ChildEventListener;
@@ -21,11 +18,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -175,12 +169,12 @@ public class GuardianHomeActivity extends AppCompatActivity {
     }
 
     public void addChild(){
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-        AddChild addChild = new AddChild();
+        //android.app.FragmentManager fragmentManager = getFragmentManager();
+        AddChildDialogFragment addChildDialogFragment = new AddChildDialogFragment();
         Bundle n = new Bundle();
         n.putString("id",id);
-        addChild.setArguments(n);
-        addChild.show(fragmentManager,"Add Child");
+        addChildDialogFragment.setArguments(n);
+        addChildDialogFragment.show(getSupportFragmentManager(),"Add Child");
 
     }
 

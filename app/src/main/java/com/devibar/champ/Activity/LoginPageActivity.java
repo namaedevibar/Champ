@@ -141,7 +141,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Toast.makeText(LoginPageActivity.this, "Wala pa animal", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginPageActivity.this, "Please try again later.", Toast.LENGTH_SHORT).show();
 
                                     }
 
