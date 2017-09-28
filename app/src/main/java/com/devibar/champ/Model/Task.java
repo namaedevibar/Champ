@@ -3,14 +3,21 @@ package com.devibar.champ.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Created by namai on 9/26/2017.
  */
-
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Task implements Parcelable{
+    @JsonProperty
     private String taskId;
+    @JsonProperty
     private String taskName;
+    @JsonProperty
     private String taskDescription;
+    @JsonProperty
     private String status;
 
     public Task() {
