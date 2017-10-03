@@ -5,6 +5,7 @@ package com.devibar.champ.Model;
  */
 
 public class Reward {
+
     private String rewardId;
     private String name;
     private String childId;

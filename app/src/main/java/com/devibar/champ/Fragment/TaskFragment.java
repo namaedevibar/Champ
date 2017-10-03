@@ -4,15 +4,21 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.devibar.champ.Activity.ChildProfileActivity;
 import com.devibar.champ.Adapter.TaskAdapter;
 import com.devibar.champ.Controller.TaskController;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 
 import java.util.ArrayList;
 
@@ -24,12 +30,15 @@ public class TaskFragment extends Fragment {
 
     private RecyclerView mRvTasks;
     private TaskAdapter mAdapter;
+    ArrayList<Task> taskList;
+    Firebase todosDB;
 
 
-    public static TaskFragment newInstance(String status) {
+    public static TaskFragment newInstance(String status, String id) {
 
         Bundle args = new Bundle();
         args.putString("STATUS",status);
+        args.putString("id",id);
 
         TaskFragment fragment = new TaskFragment();
         fragment.setArguments(args);
@@ -41,28 +50,73 @@ public class TaskFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_task, container, false);
+        taskList = new ArrayList<>();
 
         String status = getArguments().getString("STATUS");
+        String id = getArguments().getString("id");
+        todosDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
+
 
         mRvTasks = view.findViewById(R.id.rvTasks);
         mRvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ArrayList<Task> tasks = TaskController.getTasks();
-        ArrayList<Task> statusTask = new ArrayList<>();
+        if(status.equals("To Do")){
 
-        for (Task t:tasks) {
-            if (t.getStatus().equals(status)){
-                statusTask.add(t);
-            }
+            Log.e("sud sa if","To dosdsds = ID " + id);
+           tasks();
+
+
         }
-
-        mAdapter = new TaskAdapter(statusTask);
-        mRvTasks.setAdapter(mAdapter);
 
 
         return view;
 
     }
+
+    public void tasks(){
+
+        String id = getArguments().getString("id");
+        todosDB.child(id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Task task = dataSnapshot.getValue(Task.class);
+                taskList.add(task);
+
+                Log.e("line96",task.getTaskName());
+
+                mAdapter = new TaskAdapter(taskList);
+                mRvTasks.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
+
+
+
+    }
+
+
+
 
 
 

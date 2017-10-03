@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.devibar.champ.Model.Reward;
+import com.devibar.champ.Model.Wish;
 import com.devibar.champ.R;
 
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 
 public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder>{
 
-    private ArrayList<Reward> rewards;
+    private ArrayList<Wish> wishList;
     private Context context;
     private ViewHolder holder;
 
-    public RewardAdapter(ArrayList<Reward> rewards) {
-        this.rewards = rewards;
+    public RewardAdapter(ArrayList<Wish> wishList) {
+        this.wishList = wishList;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Reward reward = rewards.get(position);
+        Wish reward = wishList.get(position);
         if (reward!=null){
             holder.tvReward.setText(reward.getName());
         }
@@ -45,7 +46,7 @@ public class RewardAdapter extends RecyclerView.Adapter<RewardAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return rewards.size();
+        return wishList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -66,6 +66,8 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
                     intent.putExtra("user_id",children.get(position).getUser_id());
                     intent.putExtra("status",children.get(position).getStatus());
 
+                    intent.putExtra("classBefore","search");
+
                     context.startActivity(intent);
                 }
             });

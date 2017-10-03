@@ -40,6 +40,7 @@ public class AddChildDialogFragment extends SupportBlurDialogFragment {
     ArrayList<Child>children;
     Firebase guardianChild;
     int index = 0;
+    int counter = 0;
 
     public AddChildDialogFragment() {
         // Required empty public constructor
@@ -75,26 +76,31 @@ public class AddChildDialogFragment extends SupportBlurDialogFragment {
             public void onClick(View view) {
 
 
+
                 childDB.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Log.e("sdsd",dataSnapshot.toString());
-                        Child child = dataSnapshot.child("info").getValue(Child.class);
-                        Log.e("childdasd",child.getFirstName());
-
+                        Child child = dataSnapshot.getValue(Child.class);
+                        Log.e("wew",dataSnapshot.getChildrenCount()+"");
+                        //Log.e("childdasd",child.getFirstName());
+                        counter = counter + (int)dataSnapshot.getChildrenCount();
+                        index++;
 
                         if(name.getText().toString().equals(child.getFirstName() + " "+child.getLastName())){
 
                             Log.e("asds",child.getFirstName());
                             children.add(child);
-                            index++;
-                            if(dataSnapshot.getChildrenCount() == index++){
+
+
+                            if(counter/6 == index){
 
                                 Intent intent = new Intent(getActivity(), GuardianHomeActivity.class);
 
                                 intent.putExtra("list",children);
                                 intent.putExtra("id",passId);
                                 intent.putExtra("type","search");
+
 
                                 startActivity(intent);
 

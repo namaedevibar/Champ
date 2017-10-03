@@ -4,9 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devibar.champ.Adapter.RewardAdapter;
@@ -15,15 +17,25 @@ import com.devibar.champ.Fragment.AddWishDialogFragment;
 import com.devibar.champ.Fragment.EditChildDialogFragment;
 
 import com.devibar.champ.Model.Child;
+import com.devibar.champ.Model.Wish;
 import com.devibar.champ.R;
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
+import java.util.ArrayList;
 
 public class ChildActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button mEditProfile;
     private Button mAddWish;
     private RecyclerView mRvRewards;
-
+    private TextView childName, guardianName;
+    private String child_name, guardian_name, child_id;
     private RewardAdapter mAdapter;
+    Firebase childWishlistDB;
+    ArrayList<Wish> wishList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,21 +43,75 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_child);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Profile");
+        childName = (TextView)findViewById(R.id.txtName);
+        guardianName = (TextView)findViewById(R.id.txtGuardian);
+        wishList = new ArrayList<>();
+
+        child_name = getIntent().getStringExtra("childName");
+        guardian_name = getIntent().getStringExtra("guardianName");
+        child_id = getIntent().getStringExtra("id");
+
+       // Log.e("line54",child_id);
+        childName.setText(child_name);
+        guardianName.setText(guardian_name);
+
+        setWishlist();
+
 
         mEditProfile = (Button) findViewById(R.id.btnEditChild);
         mAddWish = (Button) findViewById(R.id.btnAddWish);
         mRvRewards = (RecyclerView) findViewById(R.id.rvRewards);
 
-        mRvRewards.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new RewardAdapter(RewardController.getRewards());
 
-        mRvRewards.setAdapter(mAdapter);
+
+
 
 
         mEditProfile.setOnClickListener(this);
         mAddWish.setOnClickListener(this);
 
 
+    }
+    public void setWishlist(){
+
+        childWishlistDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_REWARD");
+
+        Log.e("line54",child_id);
+        childWishlistDB.child(child_id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Wish wish = dataSnapshot.getValue(Wish.class);
+
+                if(wish.getStatus().equals("wala pa")){
+                    wishList.add(wish);
+
+                    mRvRewards.setLayoutManager(new LinearLayoutManager(ChildActivity.this));
+                    mAdapter = new RewardAdapter(wishList);
+
+                    mRvRewards.setAdapter(mAdapter);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -62,7 +128,7 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
             EditChildDialogFragment editChildDialogFragment = EditChildDialogFragment.newInstance();
             editChildDialogFragment.show(getSupportFragmentManager(),"");
         }else {
-            AddWishDialogFragment addWishDialogFragment = AddWishDialogFragment.newInstance();
+            AddWishDialogFragment addWishDialogFragment = AddWishDialogFragment.newInstance(child_id);
             addWishDialogFragment.show(getSupportFragmentManager(),"");
         }
     }

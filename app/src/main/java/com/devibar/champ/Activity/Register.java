@@ -121,14 +121,20 @@ public class Register extends AppCompatActivity {
 
                                         Child child = new Child(fbuser.getUid(),child_id,"wala pa",firstName.getText().toString(),lastName.getText().toString(),"false");
 
-                                        childDB.child(child_id).child("info").setValue(child);
+                                        childDB.child(child_id).setValue(child);
                                         Intent intent = new Intent(Register.this,ChildProfileActivity.class);
+                                        intent.putExtra("child_id",child_id);
+                                        intent.putExtra("first name",firstName.getText().toString());
+                                        intent.putExtra("last name",lastName.getText().toString());
+                                        intent.putExtra("user_id",fbuser.getUid());
+                                        intent.putExtra("classBefore","Register");
+
                                         startActivity(intent);
 
                                     }else{
 
                                         Map<String, String> params = new HashMap<String, String>();
-                                        params.put("child_id", "wala pa");
+                                        //params.put("child_id", "wala pa");
                                         params.put("user_id", fbuser.getUid());
                                         params.put("firstName",firstName.getText().toString());
                                         params.put("lastName",lastName.getText().toString());
@@ -138,7 +144,9 @@ public class Register extends AppCompatActivity {
                                         parentDB.child(key).setValue(params);
 
                                         Intent intent = new Intent(Register.this,GuardianHomeActivity.class);
+
                                         intent.putExtra("id",key);
+                                        intent.putExtra("type","normal");
 
                                         startActivity(intent);
 
