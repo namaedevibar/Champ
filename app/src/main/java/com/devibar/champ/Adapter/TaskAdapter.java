@@ -30,14 +30,16 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     private Context context;
     private ViewHolder holder;
     private FragmentManager fragmentManager;
+    private String guardianName;
 
     public TaskAdapter(ArrayList<Task> tasks, FragmentManager fragmentManager) {
         this.tasks = tasks;
         this.fragmentManager = fragmentManager;
     }
 
-    public TaskAdapter(ArrayList<Task> tasks) {
+    public TaskAdapter(ArrayList<Task> tasks, String guardianName) {
         this.tasks = tasks;
+        this.guardianName = guardianName;
     }
 
     @Override
@@ -55,6 +57,7 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         if (task!=null){
             holder.tvTask.setText(task.getTaskName());
             holder.txtStatus.setText(task.getStatus());
+
 
             for (int i = 0; i < 3; i++) {
                 holder.tvStatus.addDot();
@@ -78,6 +81,7 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                     }else {
                         Intent intent = new Intent(context, TaskActivity.class);
                         intent.putExtra("TASK",task);
+                        intent.putExtra("guardianName",guardianName);
                         context.startActivity(intent);
                     }
 

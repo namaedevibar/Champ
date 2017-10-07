@@ -44,6 +44,8 @@ public class AddWishDialogFragment extends SupportBlurDialogFragment {
     }
 
     @NonNull
+
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

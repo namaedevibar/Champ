@@ -20,11 +20,13 @@ import com.devibar.champ.Interface.OnConfirmListener;
 import com.devibar.champ.Interface.OnManageTaskListener;
 import com.devibar.champ.Model.Child;
 import com.devibar.champ.Model.Task;
+import com.devibar.champ.Model.Wish;
 import com.devibar.champ.R;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -40,6 +42,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
 
     private Button mAddChild;
     private Button mAddTask;
+    Firebase taskReward;
 
     ArrayList<Task> tasksList;
     private TaskAdapter mAdapter;
@@ -57,6 +60,23 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().hide();
         tasksList = new ArrayList<>();
 
+        firstName = getIntent().getStringExtra("first name");
+        lastName = getIntent().getStringExtra("last name");
+        user_id = getIntent().getStringExtra("user_id");
+        status = getIntent().getStringExtra("status");
+        child_id = getIntent().getStringExtra("child_id");
+        guardian_id = getIntent().getStringExtra("guardian_id");
+
+
+        taskReward = new Firebase("https://finalsattendanceapp.firebaseio.com/TASK_REWARD");
+        guardianChildDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIANCHILDREN");
+        childDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD");
+        guardianTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN_TASKS");
+        childTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
+        guardianDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
+
+        Log.e("fuck","firstName "+ firstName + "lastName "+lastName + "user_id "+user_id + " status "+status + " child_id"+child_id+"guardian_id"+guardian_id);
+
         if(getIntent().getStringExtra("classBefore").equals("Register")){
 
             //i disable ang add child button og add task button
@@ -73,6 +93,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
                 //nanay mama
                 if(guardian_id.equals(parent_id)){//if ang guardian sa child kay ang ga view sa profile sa child
                     //ipakita tong button nga add task nya katong textview kay your child
+                    setGuardian();
                 }else{
                     //i disable ang add task nga button og ang textview himoa lang sa og dili ni imong anak haha
                 }
@@ -82,23 +103,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        firstName = getIntent().getStringExtra("first name");
-        lastName = getIntent().getStringExtra("last name");
-        user_id = getIntent().getStringExtra("user_id");
-        status = getIntent().getStringExtra("status");
-        child_id = getIntent().getStringExtra("child_id");
-        guardian_id = getIntent().getStringExtra("guardian_id");
 
-
-
-
-
-
-        guardianChildDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIANCHILDREN");
-        childDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD");
-        guardianTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN_TASKS");
-        childTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
-        guardianDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
 
 
         mChildName = (TextView) findViewById(R.id.txtName);
@@ -108,7 +113,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
 
         mChildName.setText(firstName + " "+ lastName);
 
-        setGuardian();
+
 
         rvTasks = (RecyclerView) findViewById(R.id.rvTasks);
 
@@ -122,28 +127,13 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void setGuardian(){
-        guardianDB.child(guardian_id).addChildEventListener(new ChildEventListener() {
+        Log.e("fuck2",guardian_id);
+        guardianDB.child(guardian_id).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String guardianName = dataSnapshot.child("firstName").getValue(String.class);
-
-                Log.e("line 129",guardianName);
-                mGuardian.setText(guardianName);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("atayasdas",dataSnapshot.toString());
+                String name = dataSnapshot.child("firstName").getValue(String.class) + " " + dataSnapshot.child("lastName").getValue(String.class);
+                mGuardian.setText(name);
             }
 
             @Override
@@ -203,7 +193,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
                     .newInstance("Are you sure you want to add this child?");
             confirmDialogFragment.show(getSupportFragmentManager(),"");
         }else {
-            ManageTaskDialogFragment manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("ADD");
+            ManageTaskDialogFragment manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("ADD",child_id);
             manageTaskDialogFragment.show(getSupportFragmentManager(),"");
         }
 
@@ -228,8 +218,10 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
     @Override
-    public void manageTask(String purpose, Task task) {
+    public void manageTask(String purpose, Task task, Wish wish) {
+
         if (purpose.equals("ADD")){
 
             String task_id = childTaskDB.push().getKey();
@@ -237,10 +229,11 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             task.setTaskId(task_id);
             task.setStatus("Wala pa");
 
-
             childTaskDB.child(child_id).child(task_id).setValue(task);
             guardianTaskDB.child(parent_id).child(child_id).child(task_id).setValue(task);
-
+            
+            if(wish!=null)
+            taskReward.child(task_id).setValue(wish);
 
             // TODO: Add Task 
             Toast.makeText(this, task.getTaskName() +" added!", Toast.LENGTH_SHORT).show();
@@ -248,5 +241,8 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             // TODO: Edit Task 
             Toast.makeText(this, task.getTaskName() +" edited!", Toast.LENGTH_SHORT).show();
         }
+
     }
+
+
 }

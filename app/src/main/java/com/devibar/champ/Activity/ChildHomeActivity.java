@@ -30,6 +30,7 @@ public class ChildHomeActivity extends AppCompatActivity {
     String firstName="";
     String lastName = "";
     String guardian_id;
+    String guardianName = "";
     Firebase todosDB;
     Firebase guardianDB;
     @Override
@@ -43,22 +44,22 @@ public class ChildHomeActivity extends AppCompatActivity {
         guardianDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
         guardian_id = getIntent().getStringExtra("guardian_id");
         Log.e("guardian_idline42",guardian_id);
-
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         if(guardian_id.equals("wala pa")){
 
         }else{
-            setGuardian();
+            setGuardian(viewPager);
         }
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+
+        //setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.mTabs);
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    public void setGuardian(){
+    public void setGuardian(final ViewPager viewPager){
 
 
         guardianDB.child(guardian_id).addChildEventListener(new ChildEventListener() {
@@ -71,6 +72,11 @@ public class ChildHomeActivity extends AppCompatActivity {
                 }else if(dataSnapshot.getKey().equals("lastName")){
                     lastName = dataSnapshot.getValue(String.class);
                     guardian_name.setText(firstName + " "+ lastName);
+
+                    guardianName = firstName + " " + lastName;
+                    Log.e("childhomeactivity",guardianName);
+
+                      setupViewPager(viewPager);
 
                 }
 
@@ -114,13 +120,11 @@ public class ChildHomeActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.profile) {
             String name = getIntent().getStringExtra("name");
 
-
-
             Intent intent = new Intent(ChildHomeActivity.this, ChildActivity.class);
 
 
             intent.putExtra("childName",name);
-            intent.putExtra("guardianName",firstName + " "+lastName);
+            intent.putExtra("guardianName",guardianName);
             intent.putExtra("id",id);
             startActivity(intent);
         }
@@ -129,11 +133,13 @@ public class ChildHomeActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+       // String guardianName = firstName + " " + lastName;
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        TaskFragment toDo = TaskFragment.newInstance("To Do", id);
-        TaskFragment onGoing = TaskFragment.newInstance("On-Going", id);
-        TaskFragment completed = TaskFragment.newInstance("Completed", id);
+        TaskFragment toDo = TaskFragment.newInstance("To Do", id, guardianName);
+        TaskFragment onGoing = TaskFragment.newInstance("On-Going", id,guardianName);
+        TaskFragment completed = TaskFragment.newInstance("Completed", id,guardianName);
 
         adapter.addFragment(toDo, "To Do");
         adapter.addFragment(onGoing, "On-Going");

@@ -34,11 +34,12 @@ public class TaskFragment extends Fragment {
     Firebase todosDB;
 
 
-    public static TaskFragment newInstance(String status, String id) {
+    public static TaskFragment newInstance(String status, String id, String guardianName) {
 
         Bundle args = new Bundle();
         args.putString("STATUS",status);
         args.putString("id",id);
+        args.putString("guardianName",guardianName);
 
         TaskFragment fragment = new TaskFragment();
         fragment.setArguments(args);
@@ -54,6 +55,8 @@ public class TaskFragment extends Fragment {
 
         String status = getArguments().getString("STATUS");
         String id = getArguments().getString("id");
+
+
         todosDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
 
 
@@ -65,7 +68,6 @@ public class TaskFragment extends Fragment {
             Log.e("sud sa if","To dosdsds = ID " + id);
            tasks();
 
-
         }
 
 
@@ -76,6 +78,8 @@ public class TaskFragment extends Fragment {
     public void tasks(){
 
         String id = getArguments().getString("id");
+        final String guardianName = getArguments().getString("guardianName");
+        Log.e("PISTE ATAY",guardianName + " ");
         todosDB.child(id).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -84,8 +88,9 @@ public class TaskFragment extends Fragment {
 
                 Log.e("line96",task.getTaskName());
 
-                mAdapter = new TaskAdapter(taskList);
+                mAdapter = new TaskAdapter(taskList,guardianName);
                 mRvTasks.setAdapter(mAdapter);
+
             }
 
             @Override
