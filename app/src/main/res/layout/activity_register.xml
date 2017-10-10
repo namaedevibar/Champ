@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context="com.devibar.champ.Activity.Register">
+    tools:context="com.devibar.champ.Activity.RegisterActivity">
 
     <ScrollView
         android:layout_width="0dp"
@@ -248,7 +248,7 @@
     <!--android:layout_below="@+id/radiogroup"-->
     <!--android:layout_centerHorizontal="true"-->
     <!--android:layout_marginTop="31dp"-->
-    <!--android:text="Register" />-->
+    <!--android:text="RegisterActivity" />-->
 
     <!--<RadioGroup-->
     <!--android:layout_width="wrap_content"-->

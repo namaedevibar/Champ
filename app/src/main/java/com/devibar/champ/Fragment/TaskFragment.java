@@ -46,6 +46,17 @@ public class TaskFragment extends Fragment {
         return fragment;
     }
 
+    public static TaskFragment newInstance(String status, String id) {
+
+        Bundle args = new Bundle();
+        args.putString("STATUS",status);
+        args.putString("id",id);
+
+        TaskFragment fragment = new TaskFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,6 +66,7 @@ public class TaskFragment extends Fragment {
 
         String status = getArguments().getString("STATUS");
         String id = getArguments().getString("id");
+
 
 
         todosDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
@@ -79,44 +91,42 @@ public class TaskFragment extends Fragment {
 
         String id = getArguments().getString("id");
         final String guardianName = getArguments().getString("guardianName");
-        Log.e("PISTE ATAY",guardianName + " ");
-        todosDB.child(id).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Task task = dataSnapshot.getValue(Task.class);
-                taskList.add(task);
+        if (guardianName!=null){
+            Log.e("PISTE ATAY",guardianName + " ");
+            todosDB.child(id).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Task task = dataSnapshot.getValue(Task.class);
+                    taskList.add(task);
 
-                Log.e("line96",task.getTaskName());
+                    Log.e("line96",task.getTaskName());
 
-                mAdapter = new TaskAdapter(taskList,guardianName);
-                mRvTasks.setAdapter(mAdapter);
+                    mAdapter = new TaskAdapter(taskList,guardianName);
+                    mRvTasks.setAdapter(mAdapter);
 
-            }
+                }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            }
+                }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            }
+                }
 
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
 
-            }
-        });
-
-
-
-
+                }
+            });
+        }
 
     }
 

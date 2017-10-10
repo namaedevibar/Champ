@@ -62,7 +62,7 @@ public class AddWishDialogFragment extends SupportBlurDialogFragment {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Add Wish
+
                 Log.e("line63",id);
 
                 String wishId = childWishlistDB.push().getKey();

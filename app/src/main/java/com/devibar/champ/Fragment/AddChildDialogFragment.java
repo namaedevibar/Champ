@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.annotation.NonNull;
+import android.text.GetChars;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.devibar.champ.Activity.GuardianHomeActivity;
 import com.devibar.champ.Model.Child;
@@ -74,7 +76,7 @@ public class AddChildDialogFragment extends SupportBlurDialogFragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                //// TODO: di sha masearch
 
 
                 childDB.addChildEventListener(new ChildEventListener() {
@@ -92,19 +94,30 @@ public class AddChildDialogFragment extends SupportBlurDialogFragment {
                             Log.e("asds",child.getFirstName());
                             children.add(child);
 
+                            Intent intent = new Intent(getActivity(), GuardianHomeActivity.class);
 
-                            if(counter/6 == index){
-
-                                Intent intent = new Intent(getActivity(), GuardianHomeActivity.class);
-
-                                intent.putExtra("list",children);
-                                intent.putExtra("id",passId);
-                                intent.putExtra("type","search");
+                            intent.putExtra("list",children);
+                            intent.putExtra("id",passId);
+                            intent.putExtra("type","search");
 
 
-                                startActivity(intent);
+                            startActivity(intent);
 
-                            }
+
+//                            if(counter/6 == index){
+//
+//                                Intent intent = new Intent(getActivity(), GuardianHomeActivity.class);
+//
+//                                intent.putExtra("list",children);
+//                                intent.putExtra("id",passId);
+//                                intent.putExtra("type","search");
+//
+//
+//                                startActivity(intent);
+//
+//                            }else {
+//                                Toast.makeText(getContext(), "No child found.", Toast.LENGTH_SHORT).show();
+//                            }
 
                          //   childDB.child(dataSnapshot.getKey()).child("info").child("guardian_id").setValue(passId);
                            // guardianChild.child(passId).child(dataSnapshot.getKey()).setValue(child);

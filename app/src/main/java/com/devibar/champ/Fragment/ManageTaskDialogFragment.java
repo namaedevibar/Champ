@@ -62,7 +62,7 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
         return fragment;
     }
 
-    //EDIT TASK
+    //EDIT OR VIEW TASK
     public static ManageTaskDialogFragment newInstance(String purpose, Task task) {
 
         Bundle args = new Bundle();
@@ -73,6 +73,8 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -109,50 +111,65 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
 
 
 
-        // TODO: Fetch Rewards 
+
 
 
         if (getArguments()!=null){
            purpose = getArguments().getString("PURPOSE");
-            if (purpose.equals("EDIT")){
-                mAdd.setText("EDIT");
-                mTask.setText("EDIT TASK");
-                task = getArguments().getParcelable("TASK");
-                if (task!=null){
+            if (task!=null){
+                if (purpose.equals("EDIT")){
+                    mAdd.setText("EDIT");
+                    mTask.setText("EDIT TASK");
+                    task = getArguments().getParcelable("TASK");
                     mTaskName.setText(task.getTaskName());
                     mTaskDesc.setText(task.getTaskDescription());
+                }else if(purpose.equals("VIEW")) {
+                    task = getArguments().getParcelable("TASK");
+                    mTaskName.setEnabled(false);
+                    mTaskDesc.setEnabled(false);
+                    mTask.setText("TASK");
+                    mAdd.setText("DONE TASK");
+                    mTaskName.setText(task.getTaskName());
+                    mTaskDesc.setText(task.getTaskDescription());
+                }else {
+                    setRewards();
                 }
-            }else{
-                setRewards();
             }
+
         }
 
 
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String taskName = mTaskName.getText().toString();
-                String taskDesc = mTaskDesc.getText().toString();
+                if (purpose.equals("VIEW")){
+                    //// TODO: Mark done task
 
-                if (taskName.equals("") || taskDesc.equals("")){
-                    DialogUtility.messageDialog("Please don't leave any empty field.",getContext());
                 }else {
-                    if (purpose.equals("ADD")){
-                        task = new Task("",taskName,taskDesc,"To Do");
-                        int index = mRewards.getSelectedIndex();
-                        Wish wish = rewardsList.get(index);
+                    String taskName = mTaskName.getText().toString();
+                    String taskDesc = mTaskDesc.getText().toString();
 
-                        mManageTaskListener.manageTask("ADD",task,wish);
-
+                    if (taskName.equals("") || taskDesc.equals("")){
+                        DialogUtility.messageDialog("Please don't leave any empty field.",getContext());
                     }else {
-                        task.setTaskDescription(taskDesc);
-                        task.setTaskName(taskName);
-                        Wish wish = new Wish();
+                        if (purpose.equals("ADD")){
+                            task = new Task("",taskName,taskDesc,"To Do");
+                            int index = mRewards.getSelectedIndex();
+                            Wish wish = rewardsList.get(index);
 
-                        mManageTaskListener.manageTask("EDIT",task,wish);
+                            mManageTaskListener.manageTask("ADD",task,wish);
+
+                        }else {
+                            task.setTaskDescription(taskDesc);
+                            task.setTaskName(taskName);
+                            Wish wish = new Wish();
+
+                            mManageTaskListener.manageTask("EDIT",task,wish);
+                        }
+                        dismiss();
                     }
-                    dismiss();
                 }
+
 
             }
         });

@@ -1,5 +1,6 @@
 package com.devibar.champ.Activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -8,14 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.devibar.champ.Model.Child;
-import com.devibar.champ.Model.Guardian;
 import com.devibar.champ.Model.User;
 import com.devibar.champ.R;
+import com.devibar.champ.Utility.DialogUtility;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,12 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Register extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     EditText email;
     EditText password;
@@ -44,12 +42,14 @@ public class Register extends AppCompatActivity {
     String type;
     private int flag = 0;
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle("Register");
+        setTitle("RegisterActivity");
 
 
         email = (EditText)findViewById(R.id.etEmail);
@@ -58,6 +58,7 @@ public class Register extends AppCompatActivity {
         lastName = (EditText)findViewById(R.id.etLastName);
         register = (Button)findViewById(R.id.btnRegister);
         mUserType = (MaterialSpinner) findViewById(R.id.spnUserType);
+        progressDialog = new ProgressDialog(this);
 
         final ArrayList<String> userType = new ArrayList<>();
         userType.add("Select user type.");
@@ -96,9 +97,10 @@ public class Register extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DialogUtility.progressDialogShow(progressDialog);
 
                 mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
-                        .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
@@ -122,12 +124,12 @@ public class Register extends AppCompatActivity {
                                         Child child = new Child(fbuser.getUid(),child_id,"wala pa",firstName.getText().toString(),lastName.getText().toString(),"false");
 
                                         childDB.child(child_id).setValue(child);
-                                        Intent intent = new Intent(Register.this,ChildProfileActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this,ChildProfileActivity.class);
                                         intent.putExtra("child_id",child_id);
                                         intent.putExtra("first name",firstName.getText().toString());
                                         intent.putExtra("last name",lastName.getText().toString());
                                         intent.putExtra("user_id",fbuser.getUid());
-                                        intent.putExtra("classBefore","Register");
+                                        intent.putExtra("classBefore","RegisterActivity");
 
                                         startActivity(intent);
 
@@ -143,7 +145,7 @@ public class Register extends AppCompatActivity {
 
                                         parentDB.child(key).setValue(params);
 
-                                        Intent intent = new Intent(Register.this,GuardianHomeActivity.class);
+                                        Intent intent = new Intent(RegisterActivity.this,GuardianHomeActivity.class);
 
                                         intent.putExtra("id",key);
                                         intent.putExtra("type","normal");
@@ -154,8 +156,8 @@ public class Register extends AppCompatActivity {
 
                                 } else {
 
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Register.this, "Animal Wala doh", Toast.LENGTH_SHORT).show();
+                                    DialogUtility.progressDialogDismiss(progressDialog);
+                                    Toast.makeText(RegisterActivity.this, "Unable to register", Toast.LENGTH_SHORT).show();
 
 
                                 }

@@ -61,7 +61,7 @@ public class EditChildDialogFragment extends SupportBlurDialogFragment implement
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btnEditChild){
-            // TODO: OnEditChildListener
+            // TODO: edit child
         }
 
         dismiss();

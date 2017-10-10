@@ -24,7 +24,7 @@
         <activity android:name=".Activity.ChildProfileActivity" />
         <activity android:name=".Activity.ChildHomeActivity" />
         <activity android:name=".Activity.TaskActivity" />
-        <activity android:name=".Activity.Register" />
+        <activity android:name=".Activity.RegisterActivity" />
         <activity android:name=".Activity.ChildActivity"></activity>
     </application>
 

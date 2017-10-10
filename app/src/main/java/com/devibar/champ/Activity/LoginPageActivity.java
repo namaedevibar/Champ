@@ -1,6 +1,7 @@
 package com.devibar.champ.Activity;
 
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.devibar.champ.Model.Child;
@@ -40,6 +42,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
     Firebase parentDB;
     Firebase IdReference;
     Firebase childDB;
+    private ProgressDialog progressDialog;
 
 
 
@@ -53,6 +56,8 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        progressDialog = new ProgressDialog(this);
 
         Firebase.setAndroidContext(this);
         mAuth = FirebaseAuth.getInstance();
@@ -83,7 +88,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         if  (view.getId() == R.id.btnLogin){
-
+            DialogUtility.progressDialogShow(progressDialog);
             String email = mUsername.getText().toString();
             String password = mPassword.getText().toString();
 
@@ -147,8 +152,10 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
 
 
                                     } else {
+                                        DialogUtility.progressDialogDismiss(progressDialog);
                                         // If sign in fails, display a message to the user.
                                         Toast.makeText(LoginPageActivity.this, "Please try again later.", Toast.LENGTH_SHORT).show();
+
 
                                     }
 
@@ -210,6 +217,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
 
                                     } else {
                                         // If sign in fails, display a message to the user.
+                                        DialogUtility.progressDialogDismiss(progressDialog);
                                         Toast.makeText(LoginPageActivity.this, "Please try again later.", Toast.LENGTH_SHORT).show();
 
                                     }

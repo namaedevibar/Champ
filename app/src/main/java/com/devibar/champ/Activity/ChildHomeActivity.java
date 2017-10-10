@@ -38,15 +38,17 @@ public class ChildHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_home);
         setTitle("Home");
+        Firebase.setAndroidContext(this);
         id = getIntent().getStringExtra("id");
         guardian_name = (TextView)findViewById(R.id.txtGuardian);
         todosDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
         guardianDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
         guardian_id = getIntent().getStringExtra("guardian_id");
         Log.e("guardian_idline42",guardian_id);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         if(guardian_id.equals("wala pa")){
-
+            setupViewPager(viewPager,"No Guardian");
         }else{
             setGuardian(viewPager);
         }
@@ -76,7 +78,7 @@ public class ChildHomeActivity extends AppCompatActivity {
                     guardianName = firstName + " " + lastName;
                     Log.e("childhomeactivity",guardianName);
 
-                      setupViewPager(viewPager);
+                      setupViewPager(viewPager, "With Guardian");
 
                 }
 
@@ -132,14 +134,26 @@ public class ChildHomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager, String purpose) {
        // String guardianName = firstName + " " + lastName;
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        TaskFragment toDo = TaskFragment.newInstance("To Do", id, guardianName);
-        TaskFragment onGoing = TaskFragment.newInstance("On-Going", id,guardianName);
-        TaskFragment completed = TaskFragment.newInstance("Completed", id,guardianName);
+        TaskFragment toDo;
+        TaskFragment onGoing;
+        TaskFragment completed;
+
+        if (purpose.equals("With Guardian")){
+            toDo = TaskFragment.newInstance("To Do", id, guardianName);
+            onGoing = TaskFragment.newInstance("On-Going", id,guardianName);
+            completed = TaskFragment.newInstance("Completed", id,guardianName);
+
+        }else {
+            toDo = TaskFragment.newInstance("To Do", id);
+            onGoing = TaskFragment.newInstance("On-Going", id);
+            completed = TaskFragment.newInstance("Completed", id);
+        }
+
 
         adapter.addFragment(toDo, "To Do");
         adapter.addFragment(onGoing, "On-Going");

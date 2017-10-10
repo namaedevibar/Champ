@@ -76,7 +76,14 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                 @Override
                 public void onClick(View view) {
                     if (fragmentManager!=null){
-                        ManageTaskDialogFragment manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task);
+                        ManageTaskDialogFragment manageTaskDialogFragment;
+
+                        if (task.getStatus().equals("To Do")){
+                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task);
+                        }else {
+                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("VIEW",task);
+                        }
+
                         manageTaskDialogFragment.show(fragmentManager,"");
                     }else {
                         Intent intent = new Intent(context, TaskActivity.class);

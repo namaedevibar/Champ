@@ -60,6 +60,20 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         getSupportActionBar().hide();
         tasksList = new ArrayList<>();
 
+        mChildName = (TextView) findViewById(R.id.txtName);
+        mBirthday = (TextView) findViewById(R.id.txtBirthday);
+        mAddress = (TextView) findViewById(R.id.txtAddress);
+        mGuardian = (TextView) findViewById(R.id.txtGuardian);
+
+
+
+        rvTasks = (RecyclerView) findViewById(R.id.rvTasks);
+
+        mAddChild = (Button) findViewById(R.id.btnAddChild);
+        mAddTask = (Button) findViewById(R.id.btnAddTask);
+        mAddChild.setOnClickListener(this);
+        mAddTask.setOnClickListener(this);
+
         firstName = getIntent().getStringExtra("first name");
         lastName = getIntent().getStringExtra("last name");
         user_id = getIntent().getStringExtra("user_id");
@@ -77,13 +91,11 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
 
         Log.e("fuck","firstName "+ firstName + "lastName "+lastName + "user_id "+user_id + " status "+status + " child_id"+child_id+"guardian_id"+guardian_id);
 
-        if(getIntent().getStringExtra("classBefore").equals("Register")){
+        if(getIntent().getStringExtra("classBefore").equals("RegisterActivity")){
 
             //i disable ang add child button og add task button
             if(guardian_id != null){
-                //nanay mama
-            }else{
-                //ipakita ang add child button
+                mAddChild.setVisibility(View.GONE);
             }
 
         }else{
@@ -93,34 +105,27 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
                 //nanay mama
                 if(guardian_id.equals(parent_id)){//if ang guardian sa child kay ang ga view sa profile sa child
                     //ipakita tong button nga add task nya katong textview kay your child
+                    mAddChild.setVisibility(View.GONE);
+                    mAddTask.setVisibility(View.VISIBLE);
+
                     setGuardian();
                 }else{
                     //i disable ang add task nga button og ang textview himoa lang sa og dili ni imong anak haha
+                    mAddTask.setVisibility(View.GONE);
                 }
 
             }else{
-                //ipakita ang add child button
+               mAddChild.setText(View.VISIBLE);
             }
         }
-
-
-
-
-        mChildName = (TextView) findViewById(R.id.txtName);
-        mBirthday = (TextView) findViewById(R.id.txtBirthday);
-        mAddress = (TextView) findViewById(R.id.txtAddress);
-        mGuardian = (TextView) findViewById(R.id.txtGuardian);
 
         mChildName.setText(firstName + " "+ lastName);
 
 
 
-        rvTasks = (RecyclerView) findViewById(R.id.rvTasks);
 
-        mAddChild = (Button) findViewById(R.id.btnAddChild);
-        mAddTask = (Button) findViewById(R.id.btnAddTask);
-        mAddChild.setOnClickListener(this);
-        mAddTask.setOnClickListener(this);
+
+
 
         tasks();
 
@@ -227,7 +232,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             String task_id = childTaskDB.push().getKey();
 
             task.setTaskId(task_id);
-            task.setStatus("Wala pa");
+            task.setStatus("To Do");
 
             childTaskDB.child(child_id).child(task_id).setValue(task);
             guardianTaskDB.child(parent_id).child(child_id).child(task_id).setValue(task);
@@ -235,7 +240,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             if(wish!=null)
             taskReward.child(task_id).setValue(wish);
 
-            // TODO: Add Task 
+
             Toast.makeText(this, task.getTaskName() +" added!", Toast.LENGTH_SHORT).show();
         }else {
             // TODO: Edit Task 

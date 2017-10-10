@@ -1,10 +1,12 @@
 package com.devibar.champ.Activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +25,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -36,6 +39,7 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
     private RewardAdapter mAdapter;
     Firebase childWishlistDB;
     ArrayList<Wish> wishList;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
         child_name = getIntent().getStringExtra("childName");
         guardian_name = getIntent().getStringExtra("guardianName");
         child_id = getIntent().getStringExtra("id");
+        mAuth = FirebaseAuth.getInstance();
 
        // Log.e("line54",child_id);
         childName.setText(child_name);
@@ -61,10 +66,6 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
         mEditProfile = (Button) findViewById(R.id.btnEditChild);
         mAddWish = (Button) findViewById(R.id.btnAddWish);
         mRvRewards = (RecyclerView) findViewById(R.id.rvRewards);
-
-
-
-
 
 
         mEditProfile.setOnClickListener(this);
@@ -113,10 +114,24 @@ public class ChildActivity extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.logout_menu, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        onBackPressed();
+        if (item.getItemId() == R.id.logout){
+            //// TODO: naa ni problem sa pag sign out, wa ko kabaw nganu. please lang ko fix :)
+            mAuth.signOut();
+            Intent intent = new Intent(ChildActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }else {
+            onBackPressed();
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
