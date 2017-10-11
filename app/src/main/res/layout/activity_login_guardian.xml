@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devibar.champ.Activity.LoginPageActivity">
+    tools:context="com.devibar.champ.Activity.LoginPageActivity"
+    android:background="#c0cfff">
 
     <android.support.constraint.ConstraintLayout
         app:layout_constraintTop_toTopOf="parent"
@@ -16,17 +17,17 @@
 
 
         <TextView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/tvLoginGuardian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
             android:text="@string/login_as_guardian"
             android:textColor="@color/colorPrimary"
             android:textSize="30dp"
             android:textStyle="bold"
-             />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvUsername"

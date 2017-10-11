@@ -4,11 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devibar.champ.Activity.ChildProfileActivity">
+    tools:context="com.devibar.champ.Activity.ChildProfileActivity"
+    android:background="#c0cfff">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -60,13 +63,15 @@
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="#ecfffd">
 
                         <TextView
                             android:id="@+id/txtName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Kirsten May Repunte"
+                            android:fontFamily="sans-serif-condensed"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             android:layout_marginTop="50dp"
@@ -148,7 +153,8 @@
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/layoutGuardians"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:background="#ecfffd">
 
                         <TextView
                             android:id="@+id/tvGuardian"
@@ -156,6 +162,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorPrimary"
                             android:text="Guardian"
+                            android:fontFamily="sans-serif-condensed"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             android:layout_marginTop="16dp"
@@ -206,6 +213,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="TASKS"
+                            android:fontFamily="sans-serif-condensed"
                             style="@style/CardHeadingStyle"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
@@ -244,13 +252,16 @@
                     <RelativeLayout
                         android:layout_below="@+id/layoutGuardians"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="#ecfffd"
+                        >
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/rvTasks"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="8dp"
+
                             />
 
 

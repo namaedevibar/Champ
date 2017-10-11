@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.devibar.champ.Activity.ChildProfileActivity;
 import com.devibar.champ.Model.Child;
-import com.devibar.champ.Model.User;
 import com.devibar.champ.R;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
         final View itemLayoutView = LayoutInflater.from(context)
                 .inflate(R.layout.layout_child, null);
         holder = new ViewHolder(itemLayoutView);
+
         return holder;
     }
 
@@ -51,6 +51,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
             holder.tvDescription.setText("No Pending Tasks.");
             Glide.with(context).load(R.drawable.champ_logo)
                     .into(holder.tvImage);
+
 
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +94,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.ViewHolder>{
             tvName = itemView.findViewById(R.id.txtName);
             tvDescription = itemView.findViewById(R.id.txtDescription);
             tvImage = itemView.findViewById(R.id.imgChild);
+
 
 
         }

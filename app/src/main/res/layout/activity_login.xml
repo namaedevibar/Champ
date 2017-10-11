@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devibar.champ.Activity.LoginActivity">
+    tools:context="com.devibar.champ.Activity.LoginActivity"
+    android:background="#c0cfff">
 
 
     <ImageView
@@ -17,6 +18,25 @@
         android:src="@drawable/champ_logo"
         android:layout_margin="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btnLoginGuardian" />
+
+    <TextView
+        android:layout_width="222dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Champ"
+        android:textColor="#212121"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.528"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.454" />
 
 
     <Button

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devibar.champ.Activity.ChildHomeActivity">
+    tools:context="com.devibar.champ.Activity.ChildHomeActivity"
+    android:background="#c0cfff">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layoutGuardian"
@@ -21,6 +22,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-condensed"
             android:text="Guardian"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"

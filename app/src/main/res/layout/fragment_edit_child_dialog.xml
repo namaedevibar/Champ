@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#ffffcf">
 
     <TextView
         android:id="@+id/tvEditChild"
@@ -11,6 +12,7 @@
         android:layout_height="wrap_content"
         style="@style/CardHeadingStyle"
         android:text="EDIT PROFILE"
+        android:fontFamily="sans-serif-condensed"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
