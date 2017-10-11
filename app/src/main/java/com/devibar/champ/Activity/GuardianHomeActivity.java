@@ -43,6 +43,7 @@ public class GuardianHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_home);
         setTitle("Home");
+        Firebase.setAndroidContext(this);
 
         childlist = new ArrayList<>();
 
@@ -79,6 +80,8 @@ public class GuardianHomeActivity extends AppCompatActivity {
     }
 
     public void search(){
+
+        // TODO: Palihug ko butang sa card ang number sa tasks nga pending  
 
         childlist = (ArrayList<Child>)getIntent().getSerializableExtra("list");
 

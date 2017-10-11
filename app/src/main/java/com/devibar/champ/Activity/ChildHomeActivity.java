@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.devibar.champ.Adapter.TaskAdapter;
 import com.devibar.champ.Adapter.ViewPagerAdapter;
 import com.devibar.champ.Fragment.TaskFragment;
+import com.devibar.champ.Model.Child;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
 import com.firebase.client.ChildEventListener;
@@ -33,6 +34,7 @@ public class ChildHomeActivity extends AppCompatActivity {
     String guardianName = "";
     Firebase todosDB;
     Firebase guardianDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,8 @@ public class ChildHomeActivity extends AppCompatActivity {
         todosDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
         guardianDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
         guardian_id = getIntent().getStringExtra("guardian_id");
+
+
         Log.e("guardian_idline42",guardian_id);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);

@@ -45,7 +45,6 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
     private ProgressDialog progressDialog;
 
 
-
     private String from;
     FirebaseDatabase database;
 
@@ -63,16 +62,16 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
         mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
-        if (intent!=null){
+        if (intent != null) {
             from = intent.getStringExtra("LAYOUT");
-            if (from.equals("GUARDIAN")){
+            if (from.equals("GUARDIAN")) {
                 setContentView(R.layout.activity_login_guardian);
-            }else {
+            } else {
                 setContentView(R.layout.activity_login_child);
             }
         }
         getSupportActionBar().hide();
-        database =  FirebaseDatabase.getInstance();
+        database = FirebaseDatabase.getInstance();
 
 
         parentDB = new Firebase("https://finalsattendanceapp.firebaseio.com/GUARDIAN");
@@ -87,16 +86,16 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        if  (view.getId() == R.id.btnLogin){
+        if (view.getId() == R.id.btnLogin) {
             DialogUtility.progressDialogShow(progressDialog);
-            String email = mUsername.getText().toString();
-            String password = mPassword.getText().toString();
+            final String email = mUsername.getText().toString();
+            final String password = mPassword.getText().toString();
 
-            if (email.equals("") || password.equals("")){
-                DialogUtility.messageDialog("Please don't leave any empty fields.",this);
-            }else {
+            if (email.equals("") || password.equals("")) {
+                DialogUtility.messageDialog("Please don't leave any empty fields.", this);
+            } else {
 
-                if  (from.equals("GUARDIAN")){
+                if (from.equals("GUARDIAN")) {
 
                     Task<AuthResult> authResultTask = mAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -114,14 +113,14 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
 
                                                 String id = dataSnapshot.getKey();
 
-                                                Log.e("loginactivity92",id);
-                                                Log.e("loginactivity93",mAuth.getCurrentUser().getUid());
+                                                Log.e("loginactivity92", id);
+                                                Log.e("loginactivity93", mAuth.getCurrentUser().getUid());
 
                                                 FirebaseUser user = mAuth.getCurrentUser();
-                                                Intent intent = new Intent(LoginPageActivity.this,GuardianHomeActivity.class);
+                                                Intent intent = new Intent(LoginPageActivity.this, GuardianHomeActivity.class);
 
-                                                intent.putExtra("id",id);
-                                                intent.putExtra("type","normal");
+                                                intent.putExtra("id", id);
+                                                intent.putExtra("type", "normal");
 
                                                 startActivity(intent);
 
@@ -150,7 +149,6 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                                         });
 
 
-
                                     } else {
                                         DialogUtility.progressDialogDismiss(progressDialog);
                                         // If sign in fails, display a message to the user.
@@ -163,7 +161,7 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                                 }
                             });
 
-                }else {
+                } else {
                   /*  Intent intent = new Intent(LoginPageActivity.this,ChildHomeActivity.class);
                     startActivity(intent);*/
 
@@ -176,20 +174,23 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                                         Query query = database.getReference("CHILD");
                                         //Log.e("yawagawas","yawagawas");
 
-                                        Log.e("bag o","hahay");
+                                        Log.e("bag o", "hahay");
 
                                         childDB.orderByChild("user_id").equalTo(mAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
                                             @Override
                                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                                 Child child = dataSnapshot.getValue(Child.class);
 
-                                                Log.e("ataysds",child.getFirstName());
+                                                Log.e("ataysds", child.getFirstName());
 
-                                                  Intent intent = new Intent(LoginPageActivity.this,ChildHomeActivity.class);
-                                                  intent.putExtra("id",child.getChild_id());
-                                                  intent.putExtra("guardian_id",child.getGuardian_id());
-                                                  intent.putExtra("name",child.getFirstName() + " "+child.getLastName());
-                                                  startActivity(intent);
+                                                Intent intent = new Intent(LoginPageActivity.this, ChildHomeActivity.class);
+                                                intent.putExtra("id", child.getChild_id());
+                                                intent.putExtra("guardian_id", child.getGuardian_id());
+                                                intent.putExtra("name", child.getFirstName() + " " + child.getLastName());
+                                                intent.putExtra("email", email);
+                                                intent.putExtra("password",password);
+                                                intent.putExtra("user_id",mAuth.getCurrentUser().getUid());
+                                                startActivity(intent);
                                             }
 
                                             @Override
@@ -214,7 +215,6 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                                         });
 
 
-
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         DialogUtility.progressDialogDismiss(progressDialog);
@@ -227,10 +227,8 @@ public class LoginPageActivity extends AppCompatActivity implements View.OnClick
                             });
 
 
-
                 }
             }
-
 
 
         }

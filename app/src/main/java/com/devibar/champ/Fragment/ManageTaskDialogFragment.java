@@ -41,7 +41,7 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
     private TextView mTask;
     private EditText mTaskName;
     private EditText mTaskDesc;
-    Firebase childWishlist;
+    Firebase childWishlist, childTaskDB;
     private MaterialSpinner mRewards;
     private Button mAdd;
     Wish wish;
@@ -54,8 +54,8 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
     public static ManageTaskDialogFragment newInstance(String purpose, String child_id) {
 
         Bundle args = new Bundle();
-        args.putString("PURPOSE",purpose);
-        args.putString("child_id",child_id);
+        args.putString("PURPOSE", purpose);
+        args.putString("child_id", child_id);
 
         ManageTaskDialogFragment fragment = new ManageTaskDialogFragment();
         fragment.setArguments(args);
@@ -63,11 +63,12 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
     }
 
     //EDIT OR VIEW TASK
-    public static ManageTaskDialogFragment newInstance(String purpose, Task task) {
+    public static ManageTaskDialogFragment newInstance(String purpose, Task task, String child_id) {
 
         Bundle args = new Bundle();
-        args.putString("PURPOSE",purpose);
-        args.putParcelable("TASK",task);
+        args.putString("PURPOSE", purpose);
+        args.putParcelable("TASK", task);
+        args.putString("child_id", child_id);
 
         ManageTaskDialogFragment fragment = new ManageTaskDialogFragment();
         fragment.setArguments(args);
@@ -75,13 +76,12 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
     }
 
 
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try{
+        try {
             this.mManageTaskListener = (OnManageTaskListener) activity;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -95,7 +95,7 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
         builder.setView(view);
         final Dialog dialog = builder.create();
         childWishlist = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_REWARD");
-
+        childTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
 
 
         mTask = view.findViewById(R.id.tvAddTask);
@@ -110,20 +110,17 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
         wish = new Wish();
 
 
-
-
-
-
-        if (getArguments()!=null){
-           purpose = getArguments().getString("PURPOSE");
-            if (task!=null){
-                if (purpose.equals("EDIT")){
+        if (getArguments() != null) {
+            purpose = getArguments().getString("PURPOSE");
+            if (task != null) {
+                if (purpose.equals("EDIT")) {
                     mAdd.setText("EDIT");
                     mTask.setText("EDIT TASK");
                     task = getArguments().getParcelable("TASK");
                     mTaskName.setText(task.getTaskName());
                     mTaskDesc.setText(task.getTaskDescription());
-                }else if(purpose.equals("VIEW")) {
+                    setRewards();
+                } else if (purpose.equals("PENDING") || purpose.equals("VIEW") ) {
                     task = getArguments().getParcelable("TASK");
                     mTaskName.setEnabled(false);
                     mTaskDesc.setEnabled(false);
@@ -131,9 +128,20 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
                     mAdd.setText("DONE TASK");
                     mTaskName.setText(task.getTaskName());
                     mTaskDesc.setText(task.getTaskDescription());
+                    mRewards.setEnabled(false);
+
+                    if (purpose.equals("VIEW")){
+                        mAdd.setEnabled(false);
+                    }
+                    if (task.getStatus().equals("Completed")){
+                        mAdd.setVisibility(View.GONE);
+                    }
+                    // TODO: get Reward
                 }else {
                     setRewards();
                 }
+
+
             }
 
         }
@@ -142,29 +150,31 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
         mAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (purpose.equals("VIEW")){
-                    //// TODO: Mark done task
+                if (purpose.equals("PENDING")) {
+                    task.setStatus("Completed");
+                    mManageTaskListener.manageTask("DONE", task, wish);
+                    dismiss();
 
-                }else {
+                } else {
                     String taskName = mTaskName.getText().toString();
                     String taskDesc = mTaskDesc.getText().toString();
 
-                    if (taskName.equals("") || taskDesc.equals("")){
-                        DialogUtility.messageDialog("Please don't leave any empty field.",getContext());
-                    }else {
-                        if (purpose.equals("ADD")){
-                            task = new Task("",taskName,taskDesc,"To Do");
+                    if (taskName.equals("") || taskDesc.equals("")) {
+                        DialogUtility.messageDialog("Please don't leave any empty field.", getContext());
+                    } else {
+                        if (purpose.equals("ADD")) {
+                            task = new Task("", taskName, taskDesc, "To Do");
                             int index = mRewards.getSelectedIndex();
                             Wish wish = rewardsList.get(index);
 
-                            mManageTaskListener.manageTask("ADD",task,wish);
+                            mManageTaskListener.manageTask("ADD", task, wish);
 
-                        }else {
+                        } else {
                             task.setTaskDescription(taskDesc);
                             task.setTaskName(taskName);
-                            Wish wish = new Wish();
-
-                            mManageTaskListener.manageTask("EDIT",task,wish);
+                            int index = mRewards.getSelectedIndex();
+                            Wish wish = rewardsList.get(index);
+                            mManageTaskListener.manageTask("EDIT", task, wish);
                         }
                         dismiss();
                     }
@@ -179,43 +189,43 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
 
     }
 
-    public void setRewards(){
+    public void setRewards() {
 
         String child_id = getArguments().getString("child_id");
 
-       childWishlist.child(child_id).addChildEventListener(new ChildEventListener() {
-           @Override
-           public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-               Wish wish = dataSnapshot.getValue(Wish.class);
-               rewardsList.add(wish);
-               list.add(wish.getName());
+        childWishlist.child(child_id).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Wish wish = dataSnapshot.getValue(Wish.class);
+                rewardsList.add(wish);
+                list.add(wish.getName());
 
-               ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext(),R.layout.support_simple_spinner_dropdown_item,list);
-               mRewards.setAdapter(spinnerAdapter);
+                ArrayAdapter spinnerAdapter = new ArrayAdapter(getContext(), R.layout.support_simple_spinner_dropdown_item, list);
+                mRewards.setAdapter(spinnerAdapter);
 
 
-           }
+            }
 
-           @Override
-           public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-           }
+            }
 
-           @Override
-           public void onChildRemoved(DataSnapshot dataSnapshot) {
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-           }
+            }
 
-           @Override
-           public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-           }
+            }
 
-           @Override
-           public void onCancelled(FirebaseError firebaseError) {
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
 
-           }
-       });
+            }
+        });
 
     }
 

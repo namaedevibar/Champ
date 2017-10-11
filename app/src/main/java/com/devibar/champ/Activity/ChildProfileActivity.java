@@ -156,7 +156,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
                 Task task = dataSnapshot.getValue(Task.class);
 
                 tasksList.add(task);
-                mAdapter = new TaskAdapter(tasksList,getSupportFragmentManager());
+                mAdapter = new TaskAdapter(tasksList,getSupportFragmentManager(),child_id);
                 rvTasks.setLayoutManager(new LinearLayoutManager(ChildProfileActivity.this));
                 rvTasks.setAdapter(mAdapter);
             }
@@ -207,7 +207,6 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void response(Boolean b) {
         if (b){
-            //TODO: Add Child
             //Toast.makeText(this, "ADDED!", Toast.LENGTH_SHORT).show();
             String child_id = getIntent().getStringExtra("child_id");
             String parent_id = getIntent().getStringExtra("parent_id");
@@ -242,8 +241,14 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
 
 
             Toast.makeText(this, task.getTaskName() +" added!", Toast.LENGTH_SHORT).show();
-        }else {
-            // TODO: Edit Task 
+        }else   if (purpose.equals("DONE")){
+            childTaskDB.child(child_id).child(task.getTaskId()).setValue(task);
+            //taskReward.child(task.getTaskId()).setValue(wish);
+            Toast.makeText(this, "Task is completed!", Toast.LENGTH_SHORT).show();
+        } else {
+            childTaskDB.child(child_id).child(task.getTaskId()).setValue(task);
+            taskReward.child(task.getTaskId()).setValue(wish);
+
             Toast.makeText(this, task.getTaskName() +" edited!", Toast.LENGTH_SHORT).show();
         }
 

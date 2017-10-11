@@ -31,16 +31,21 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     private ViewHolder holder;
     private FragmentManager fragmentManager;
     private String guardianName;
+    private String id;
 
-    public TaskAdapter(ArrayList<Task> tasks, FragmentManager fragmentManager) {
+    public TaskAdapter(ArrayList<Task> tasks, FragmentManager fragmentManager, String id) {
         this.tasks = tasks;
         this.fragmentManager = fragmentManager;
+        this.id = id;
     }
 
-    public TaskAdapter(ArrayList<Task> tasks, String guardianName) {
+    public TaskAdapter(ArrayList<Task> tasks, String guardianName, String id) {
         this.tasks = tasks;
         this.guardianName = guardianName;
+        this.id = id;
     }
+
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,7 +70,9 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
 
             if (task.getStatus().equals("To Do")){
                 holder.tvStatus.selected(0);
-            }else  if (task.getStatus().equals("On-Going")){
+            }else if (task.getStatus().equals("On-Going")){
+                holder.tvStatus.selected(1);
+            }else if (task.getStatus().equals("Pending")){
                 holder.tvStatus.selected(1);
             }else {
                 holder.tvStatus.selected(2);
@@ -79,9 +86,11 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                         ManageTaskDialogFragment manageTaskDialogFragment;
 
                         if (task.getStatus().equals("To Do")){
-                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task);
-                        }else {
-                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("VIEW",task);
+                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("EDIT",task,id);
+                        }else if (task.getStatus().equals("Pending")){
+                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("PENDING",task,id);
+                        } else{
+                            manageTaskDialogFragment = ManageTaskDialogFragment.newInstance("VIEW",task,id);
                         }
 
                         manageTaskDialogFragment.show(fragmentManager,"");
@@ -89,6 +98,7 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                         Intent intent = new Intent(context, TaskActivity.class);
                         intent.putExtra("TASK",task);
                         intent.putExtra("guardianName",guardianName);
+                        intent.putExtra("id",id);
                         context.startActivity(intent);
                     }
 

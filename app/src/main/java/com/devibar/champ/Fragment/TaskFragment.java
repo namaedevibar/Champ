@@ -32,6 +32,7 @@ public class TaskFragment extends Fragment {
     private TaskAdapter mAdapter;
     ArrayList<Task> taskList;
     Firebase todosDB;
+    String status;
 
 
     public static TaskFragment newInstance(String status, String id, String guardianName) {
@@ -64,7 +65,7 @@ public class TaskFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
         taskList = new ArrayList<>();
 
-        String status = getArguments().getString("STATUS");
+        status = getArguments().getString("STATUS");
         String id = getArguments().getString("id");
 
 
@@ -75,13 +76,9 @@ public class TaskFragment extends Fragment {
         mRvTasks = view.findViewById(R.id.rvTasks);
         mRvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if(status.equals("To Do")){
 
-            Log.e("sud sa if","To dosdsds = ID " + id);
-           tasks();
 
-        }
-
+        tasks();
 
         return view;
 
@@ -89,7 +86,7 @@ public class TaskFragment extends Fragment {
 
     public void tasks(){
 
-        String id = getArguments().getString("id");
+        final String id = getArguments().getString("id");
         final String guardianName = getArguments().getString("guardianName");
         if (guardianName!=null){
             Log.e("PISTE ATAY",guardianName + " ");
@@ -97,11 +94,22 @@ public class TaskFragment extends Fragment {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Task task = dataSnapshot.getValue(Task.class);
-                    taskList.add(task);
+
+                    if (status.equals("On-Going")){
+                        if (task.getStatus().equals(status) || task.getStatus().equals("Pending")){
+                            taskList.add(task);
+                        }
+                    }else {
+                        if (task.getStatus().equals(status)){
+                            taskList.add(task);
+                        }
+                    }
+
+
 
                     Log.e("line96",task.getTaskName());
 
-                    mAdapter = new TaskAdapter(taskList,guardianName);
+                    mAdapter = new TaskAdapter(taskList,guardianName,id);
                     mRvTasks.setAdapter(mAdapter);
 
                 }

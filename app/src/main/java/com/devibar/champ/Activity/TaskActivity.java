@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.R;
@@ -25,6 +26,8 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mGuardian;
     private Button mDone;
     private Firebase taskRewardDB;
+    private Firebase childTaskDB;
+    private String id;
     private Task task;
 
 
@@ -35,6 +38,8 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("Task");
 
+
+
         mTask = (TextView) findViewById(R.id.txtTask);
         mDescription = (TextView) findViewById(R.id.txtDescription);
         mStatus = (TextView) findViewById(R.id.txtStatus);
@@ -43,22 +48,28 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
         mGuardian = (TextView) findViewById(R.id.txtGuardian);
         mDone = (Button) findViewById(R.id.btnDone);
         taskRewardDB = new Firebase("https://finalsattendanceapp.firebaseio.com/TASK_REWARD");
+        childTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
 
 
 
         if (getIntent()!=null){
             task = getIntent().getParcelableExtra("TASK");
             String guardianName = getIntent().getStringExtra("guardianName");
+            id = getIntent().getStringExtra("id");
             mGuardian.setText(guardianName);
 
             if (task!=null){
                 mTask.setText(task.getTaskName());
                 mDescription.setText(task.getTaskDescription());
+
                 mStatus.setText(task.getStatus());
                 setReward();
 
                 if (task.getStatus().equals("To Do")){
                     mDone.setText("START TASK");
+                }
+                if  (task.getStatus().equals("Pending") || task.getStatus().equals("Completed") ){
+                    mDone.setVisibility(View.GONE);
                 }
 
             }
@@ -94,10 +105,13 @@ public class TaskActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.btnDone){
             if (task.getStatus().equals("On-Going")){
-                // TODO: Start ang task
+                task.setStatus("Pending");
             }else {
-                // TODO: Finish ang task
+                task.setStatus("On-Going");
             }
+            childTaskDB.child(id).child(task.getTaskId()).setValue(task);
+            mStatus.setText(task.getStatus());
+
         }
     }
 }
