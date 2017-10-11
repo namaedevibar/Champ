@@ -164,6 +164,11 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                tasksList.clear();
+                if(mAdapter!=null)
+                    mAdapter.notifyDataSetChanged();
+                tasks();
+
             }
 
             @Override
