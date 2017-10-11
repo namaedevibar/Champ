@@ -33,10 +33,12 @@ public class TaskAdapter  extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     private String guardianName;
     private String id;
 
+
     public TaskAdapter(ArrayList<Task> tasks, FragmentManager fragmentManager, String id) {
         this.tasks = tasks;
         this.fragmentManager = fragmentManager;
         this.id = id;
+
     }
 
     public TaskAdapter(ArrayList<Task> tasks, String guardianName, String id) {

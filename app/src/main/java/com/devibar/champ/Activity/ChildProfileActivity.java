@@ -164,6 +164,11 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                tasksList.clear();
+                if(mAdapter!=null)
+                    mAdapter.notifyDataSetChanged();
+                tasks();
+
             }
 
             @Override
@@ -248,6 +253,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         } else {
             childTaskDB.child(child_id).child(task.getTaskId()).setValue(task);
             taskReward.child(task.getTaskId()).setValue(wish);
+            //
 
             Toast.makeText(this, task.getTaskName() +" edited!", Toast.LENGTH_SHORT).show();
         }

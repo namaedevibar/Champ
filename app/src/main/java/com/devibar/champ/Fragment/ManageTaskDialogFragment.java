@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.devibar.champ.Adapter.TaskAdapter;
 import com.devibar.champ.Interface.OnManageTaskListener;
 import com.devibar.champ.Model.Task;
 import com.devibar.champ.Model.Wish;
@@ -136,7 +137,7 @@ public class ManageTaskDialogFragment extends SupportBlurDialogFragment {
                     if (task.getStatus().equals("Completed")){
                         mAdd.setVisibility(View.GONE);
                     }
-                    // TODO: get Reward
+                    // TODO: get Rewards
                 }else {
                     setRewards();
                 }
