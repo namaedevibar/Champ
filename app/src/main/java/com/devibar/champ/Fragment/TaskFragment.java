@@ -1,6 +1,7 @@
 package com.devibar.champ.Fragment;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +31,7 @@ public class TaskFragment extends Fragment {
 
     private RecyclerView mRvTasks;
     private TaskAdapter mAdapter;
+    private ConstraintLayout mNoTasks;
     ArrayList<Task> taskList;
     Firebase todosDB;
     String status;
@@ -64,6 +66,7 @@ public class TaskFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_task, container, false);
         taskList = new ArrayList<>();
+        mNoTasks = view.findViewById(R.id.noTasks);
 
         status = getArguments().getString("STATUS");
         String id = getArguments().getString("id");
@@ -109,8 +112,13 @@ public class TaskFragment extends Fragment {
 
                     Log.e("line96",task.getTaskName());
 
-                    mAdapter = new TaskAdapter(taskList,guardianName,id);
-                    mRvTasks.setAdapter(mAdapter);
+                    if  (!taskList.isEmpty()){
+                        mNoTasks.setVisibility(View.GONE);
+                        mAdapter = new TaskAdapter(taskList,guardianName,id);
+                        mRvTasks.setAdapter(mAdapter);
+                    }
+
+
 
                 }
 
