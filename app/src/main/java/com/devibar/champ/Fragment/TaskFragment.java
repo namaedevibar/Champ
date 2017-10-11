@@ -97,12 +97,17 @@ public class TaskFragment extends Fragment {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Task task = dataSnapshot.getValue(Task.class);
+                    Log.e("taskfragmentline100",dataSnapshot.toString());
 
                     if (status.equals("On-Going")){
                         if (task.getStatus().equals(status) || task.getStatus().equals("Pending")){
                             taskList.add(task);
                         }
-                    }else {
+                    }else if(status.equals("To Do")){
+                        if (task.getStatus().equals(status)){
+                            taskList.add(task);
+                        }
+                    }else{
                         if (task.getStatus().equals(status)){
                             taskList.add(task);
                         }
@@ -113,17 +118,33 @@ public class TaskFragment extends Fragment {
                     Log.e("line96",task.getTaskName());
 
                     if  (!taskList.isEmpty()){
+
                         mNoTasks.setVisibility(View.GONE);
                         mAdapter = new TaskAdapter(taskList,guardianName,id);
                         mRvTasks.setAdapter(mAdapter);
                     }
 
-
-
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Task task = dataSnapshot.getValue(Task.class);
+                   /* for(int i = 0; i < taskList.size(); i++){
+                            if(taskList.get(i).getTaskId().equals(task.getTaskId())){
+                                taskList.set(i,task);
+                                mAdapter.notifyDataSetChanged();
+
+                                mNoTasks.setVisibility(View.GONE);
+                                mAdapter = new TaskAdapter(taskList,guardianName,id);
+                                mRvTasks.setAdapter(mAdapter);
+                            }
+                    }
+*/
+                    taskList.clear();
+                    Log.e("paghumanClear",taskList.size()+"");
+                    if(mAdapter!=null)
+                    mAdapter.notifyDataSetChanged();
+                    tasks();
 
                 }
 

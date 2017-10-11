@@ -248,6 +248,7 @@ public class ChildProfileActivity extends AppCompatActivity implements View.OnCl
         } else {
             childTaskDB.child(child_id).child(task.getTaskId()).setValue(task);
             taskReward.child(task.getTaskId()).setValue(wish);
+            //
 
             Toast.makeText(this, task.getTaskName() +" edited!", Toast.LENGTH_SHORT).show();
         }

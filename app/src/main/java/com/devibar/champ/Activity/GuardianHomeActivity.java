@@ -18,6 +18,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 
@@ -55,6 +56,7 @@ public class GuardianHomeActivity extends AppCompatActivity {
 
         }else{
             normal();
+            getNumberofTasks();
         }
 
         Log.e("line43atay",id);
@@ -147,6 +149,39 @@ public class GuardianHomeActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void getNumberofTasks(){
+        childTaskDB = new Firebase("https://finalsattendanceapp.firebaseio.com/CHILD_TASK");
+         Log.e("w3w","wala daw");
+        for(int i = 0; i < childlist.size(); i++){
+            childTaskDB.child(childlist.get(i).getChild_id()).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.e("160guardianhome",dataSnapshot.getChildrenCount()+"");
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+
+                }
+            });
+        }
     }
 
     @Override
